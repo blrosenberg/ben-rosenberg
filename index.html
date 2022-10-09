@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="shortcut icon" href="icon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <title>Ben Rosenberg</title>
+</head>
+
+<body>
+    <script>
+        let dropDowns = ['CV', 'MusicLinks', 'Projects']
+        let proj = ['SlopeField', 'SortRace', 'LinearRegression']
+        function displayDropDown(ind) {
+            for (let i=0;i<dropDowns.length;i++) {
+                if (i==ind) {
+                    let hid = document.getElementById(dropDowns[i]).hidden
+                    document.getElementById(dropDowns[i]).hidden = !hid
+                } else {
+                    document.getElementById(dropDowns[i]).hidden = true
+                }
+            }
+            for (let p of proj) {
+                document.getElementById(p).hidden = true
+            }
+        }
+        function unhide(name) {
+            document.getElementById(name + '_display').src += ''
+            document.getElementById(name).hidden = !document.getElementById(name).hidden
+        }
+
+        function describe(name) {
+            if (window.innerWidth > 600) {
+                document.getElementById(name+'_Describe').hidden = false
+            }
+        }
+
+        function describe_hide(name) {
+            document.getElementById(name+'_Describe').hidden = true
+        }
+    </script>
+  <main>
+    <h1>Ben Rosenberg</h1>
+    <div class="header">
+        <table>
+            <tr>
+                <th onclick="displayDropDown(0)">
+                    CV
+                </th>
+                <th onclick="displayDropDown(1)">
+                    Music
+                </th>
+                <th onclick="displayDropDown(2)">
+                    Coding Projects
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div id="CV" hidden>
+        <iframe src="BenRosenberg_CV.pdf#toolbar=0" width="75%" height="750px"></iframe>
+    </div>
+    <div id="MusicLinks" hidden>
+        <table>
+
+            <tr>
+                <td><a class="projectButton" href="https://willingdone.bandcamp.com" target="_blank" style="margin: 0 auto;">Bandcamp</a></td>
+            </tr>
+            <tr>
+                <td><a class="projectButton" href="https://open.spotify.com/artist/1gn2cZBlq6tl0TbaMjQ0Si" target="_blank" style="margin: 0 auto">Spotify</a></td>
+            </tr>
+            <!--tr>
+                <td><a class="projectButton" href="https://soundcloud.com/willingdone" target="_blank" style="margin: 0 auto">Soundcloud</a></td>
+            </tr-->
+            <tr>
+                <td>
+                    <p> </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="max-height:300px;">
+                    <img src="images/adiposessions.jpg" alt="Adiposessions by Willingdone" style="width:30%">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <iframe style="border: 0; width: 30%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=3188278208/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=none/transparent=true/" seamless><a href="https://willingdone.bandcamp.com/album/adiposessions">Adiposessions by Willingdone</a></iframe>                
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="Projects" hidden>
+        <table style="width:50%">
+            <tr>
+                <td style="height:80px; text-align:center;">
+                    <a class="projectButton" href="https://github.com/blrosenberg" target="_blank" style="width:130px; margin: 0 auto;">GitHub</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="height:120px;">
+                    <a class="projectButton" href="https://blrosenberg.github.io/MNQ/" target="_blank" style="width:200px; margin: 0 auto;" onmouseenter="describe('DataEntryTools')" onmouseout="describe_hide('DataEntryTools')">Data Entry Tools</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:200px; border-bottom: 1px solid #ddd;">Instructional Tools</td>
+            </tr>
+            <tr>
+                <td onclick="unhide('LinearRegression')">
+                    <p class="projectButton" style="margin: 0 auto;" onmouseenter="describe('LinearRegression')" onmouseout="describe_hide('LinearRegression')">Linear Regression</p>
+                    <div class="wrap" id='LinearRegression' hidden>
+                        <iframe class="p5" id='LinearRegression_display' src="CodingProjects/LinearModel/index.html" style="width: 600px; height: 500px; overflow: hidden; margin: auto auto; padding-left: 80px;"  scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td onclick="unhide('SlopeField')">
+                    <p class="projectButton" style="margin: 0 auto;" onmouseenter="describe('SlopeField')" onmouseout="describe_hide('SlopeField')">Slope Field</p>
+                    <div class="wrap" id='SlopeField' hidden>
+                        <iframe class="p5" id='SlopeField_display' src="CodingProjects/SlopeField/index.html" style="width: 600px; height: 400px; overflow: hidden; margin: auto auto; padding-left: 30px;"  scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td onclick="unhide('SortRace')">
+                    <p class="projectButton" style="margin: 0 auto;" onmouseenter="describe('SortRace')" onmouseout="describe_hide('SortRace')">Sort Race</p>
+                    <div class="wrap" id='SortRace' hidden>
+                        <iframe class="p5" id= 'SortRace_display' src="CodingProjects/SortRace/index.html" style="width: 600px; height: 600px; overflow: hidden; margin: auto auto; padding-left: 80px"  scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+        <div id="projectDescriptions" style="position:fixed; top: 25%; right: 15%; width: 180px; text-align: right;">
+            <p id="DataEntryTools_Describe" hidden>Two simple, browser-based tools to improve tedious data-entry tasks in a bookstore</p>
+            <p id="LinearRegression_Describe" hidden>Visualizes the process of training linear regression models on noisy data</p>
+            <p id="SlopeField_Describe" hidden>Visualizes the slope field for differential equations</p>
+            <p id="SortRace_Describe" hidden>Visualizes different sorting methods and the computation timef</p>
+        </div>
+    </div>
+  </main>
+</body>
+
+</html>
