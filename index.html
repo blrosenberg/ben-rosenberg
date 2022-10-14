@@ -15,7 +15,7 @@
 
 <body>
     <script>
-        let dropDowns = ['CV', 'MusicLinks', 'Projects']
+        let dropDowns = ['CV', 'MusicLinks', 'Projects', 'AboutMe']
         let proj = ['SlopeField', 'SortRace', 'LinearRegression']
         function displayDropDown(ind) {
             for (let i=0;i<dropDowns.length;i++) {
@@ -58,6 +58,9 @@
                 </th>
                 <th onclick="displayDropDown(2)">
                     Coding Projects
+                </th>
+                <th onclick="displayDropDown(3)">
+                    About Me
                 </th>
             </tr>
         </table>
@@ -134,14 +137,28 @@
                     </div>
                 </td>
             </tr>
-
         </table>
+
         <div id="projectDescriptions" style="position:fixed; top: 25%; right: 15%; width: 180px; text-align: right;">
             <p id="DataEntryTools_Describe" hidden>Two simple, browser-based tools to improve tedious data-entry tasks in a bookstore</p>
             <p id="LinearRegression_Describe" hidden>Visualizes the training of a linear regression model on noisy data</p>
             <p id="SlopeField_Describe" hidden>Visualizes the slope field for differential equations</p>
             <p id="SortRace_Describe" hidden>Visualizes different sorting methods and the computation timef</p>
         </div>
+    </div>
+    <div id="AboutMe" hidden>
+        <table>
+            <tr style="width: 100%">
+                <td style="width: 100%">
+                    <img src="images/face_round.png" alt="Ben's Face" style="width:15%;">
+                    <p>
+                        Hello!<br>
+                        I'm a musician and code-writer from Burlington, IA.<br>
+                        I make music under the name <i>Willingdone</i>, which is a nonsense word stolen from James Joyce.<br>
+                    </p>
+                </td>
+            </tr>
+        </table>
     </div>
   </main>
 </body>
