@@ -53,9 +53,9 @@
                 <th onclick="displayDropDown(0)">
                     CV
                 </th>
-                <th onclick="displayDropDown(1)">
+                <!--th onclick="displayDropDown(1)">
                     Music
-                </th>
+                </th-->
                 <th onclick="displayDropDown(2)">
                     Coding Projects
                 </th>
@@ -106,12 +106,27 @@
                 </td>
             </tr>
             <tr>
-                <td style="padding-top: 5%; padding-bottom: 10%;">
-                    <a class="projectButton" href="https://blrosenberg.github.io/MNQ/" target="_blank" style="width:200px; margin: 0 auto;" onmouseenter="describe('DataEntryTools')" onmouseout="describe_hide('DataEntryTools')">Data Entry Tools</a>
+                <td style="width:200px; border-bottom: 1px solid #ddd;">Data Interactives</td>
+            </tr>
+            <tr>
+                <td onclick="unhide('PollingPlaces')">
+                    <p class="projectButton" style="margin: 0 auto; width: 300px;" onmouseenter="describe('PollingPlaces')" onmouseout="describe_hide('PollingPlaces')">Map of Twin Cities Polling Places</p>
+                    <div class="wrap" id='PollingPlaces' hidden>
+                        <iframe class="p5" id= 'PollingPlaces_display' src="https://hamlineoracle.github.io/PollingPlaces" style="width: 600px; height: 600px; overflow: hidden; margin: auto auto; padding-left: 30px"  scrolling="no" frameborder="0"></iframe>
+                    </div>
                 </td>
             </tr>
             <tr>
-                <td style="width:200px; border-bottom: 1px solid #ddd;">Instructional Tools</td>
+                <td onclick="unhide('SnowParking')">
+                    <p class="projectButton" style="margin: 0 auto; width: 300px;" onmouseenter="describe('SnowParking')" onmouseout="describe_hide('SnowParking')">Snow Emergency Parking Map</p>
+                    <div class="wrap" id='SnowParking' hidden>
+                        <iframe class="p5" id= 'SnowParking_display' src="https://hamlineoracle.github.io/SnowParking" style="width: 600px; height: 800px; overflow: hidden; margin: auto auto; padding-left: 0px"  scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding-top: 5%; width:200px; border-bottom: 1px solid #ddd;">Instructional Tools</td>
             </tr>
             <tr>
                 <td onclick="unhide('LinearRegression')">
@@ -137,10 +152,17 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td style="padding-top: 5%; padding-bottom: 10%;">
+                    <a class="projectButton" href="https://blrosenberg.github.io/MNQ/" target="_blank" style="width:200px; margin: 0 auto;" onmouseenter="describe('DataEntryTools')" onmouseout="describe_hide('DataEntryTools')">Data Entry Tools</a>
+                </td>
+            </tr>
         </table>
 
         <div id="projectDescriptions" style="position:fixed; top: 25%; right: 15%; width: 180px; text-align: right;">
             <p id="DataEntryTools_Describe" hidden>Two simple, browser-based tools to improve tedious data-entry tasks in a bookstore</p>
+            <p id="PollingPlaces_Describe" hidden>Displays the locations of all polling places within the Twin Cities. Made for Hamline University's student newspaper.</p>
+            <p id="SnowParking_Describe" hidden>Shows students at Hamline University which lots and streets near campus are available for parking overnight</p>
             <p id="LinearRegression_Describe" hidden>Visualizes the training of a linear regression model on noisy data</p>
             <p id="SlopeField_Describe" hidden>Visualizes the slope field for differential equations</p>
             <p id="SortRace_Describe" hidden>Visualizes different sorting methods and the computation timef</p>
@@ -153,7 +175,7 @@
                     <img src="images/face_round.png" alt="Ben's Face" style="width:15%;">
                     <p>
                         Hello!<br>
-                        I'm a musician and code-writer currently based in Minneapolis, MN.<br>
+                        I'm a programmer, musician, and data science student currently based in Minneapolis, MN.<br>
                         I make music under the name <i>Willingdone</i>, which is a nonsense word stolen from James Joyce.<br><br>
                         If there's anything you'd like to discuss, please feel free to contact me via <a href="mailto:ben.lane.rosenberg@gmail.com" style="color:peru; display: inline;">email.</a>
                     </p>
