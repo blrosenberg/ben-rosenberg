@@ -210,6 +210,34 @@
             </td>
           </tr>
           <tr>
+            <td onclick="unhide('Eyes')">
+              <p
+                class="projectButton"
+                style="margin: 0 auto"
+                onmouseenter="describe('Eyes')"
+                onmouseout="describe_hide('Eyes')"
+              >
+                Eyes on the Street
+              </p>
+              <div class="wrap" id="Eyes" hidden>
+                <iframe
+                  class="p5"
+                  id="Eyes_display"
+                  src="CodingProjects/Eyes/index.html"
+                  style="
+                    width: 600px;
+                    height: 600px;
+                    overflow: hidden;
+                    margin: auto auto;
+                    padding-left: 0px;
+                  "
+                  scrolling="no"
+                  frameborder="0"
+                ></iframe>
+              </div>
+            </td>
+          </tr>
+          <tr>
             <td onclick="unhide('LinearRegression')">
               <p
                 class="projectButton"
@@ -286,34 +314,6 @@
                     overflow: hidden;
                     margin: auto auto;
                     padding-left: 200px;
-                  "
-                  scrolling="no"
-                  frameborder="0"
-                ></iframe>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td onclick="unhide('Eyes')">
-              <p
-                class="projectButton"
-                style="margin: 0 auto"
-                onmouseenter="describe('Eyes')"
-                onmouseout="describe_hide('Eyes')"
-              >
-                Eyes on the Street
-              </p>
-              <div class="wrap" id="Eyes" hidden>
-                <iframe
-                  class="p5"
-                  id="Eyes_display"
-                  src="CodingProjects/Eyes/index.html"
-                  style="
-                    width: 600px;
-                    height: 600px;
-                    overflow: hidden;
-                    margin: auto auto;
-                    padding-left: 0px;
                   "
                   scrolling="no"
                   frameborder="0"
