@@ -19,6 +19,12 @@
     <script>
       let dropDowns = ["CV", "MusicLinks", "Projects", "AboutMe"];
       let proj = ["SlopeField", "LinearRegression", "KNN", "Eyes", "Poisson"];
+      let queryString = window.location.search;
+      let URLparams = new URLSearchParams(queryString)
+      let pg = String(URLparams.get('page'))
+      let pgNum = dropDowns.indexOf(pg)
+      console.log(pgNum)
+
       function displayDropDown(ind) {
         for (let i = 0; i < dropDowns.length; i++) {
           if (i == ind) {
@@ -400,6 +406,10 @@
             Automatically updates to show which lots and streets near campus are
             available for parking overnight on a given day
           </p>
+          <p id="StateOfHamline_Describe" hidden>
+            A brief review and visualization some of the publicly available data
+            describing Hamline University.
+          </p>
           <p id="LinearRegression_Describe" hidden>
             Visualizes the training of a linear regression model on noisy data
           </p>
@@ -462,7 +472,11 @@
         </table>
       </div>
       <script>
-        displayDropDown(3);
+        if (pgNum >= 0) {
+          displayDropDown(pgNum)
+        } else {
+          displayDropDown(3);
+        }
       </script>
     </main>
   </body>
