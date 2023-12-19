@@ -56,29 +56,36 @@ let rel_counters = [];
 let imgFiles = [];
 
 let quants = [];
+let actualQuants = [];
 let numShown = numBlocks;
 let init_table;
 let prev_uf_length = 0;
 
 for (let i = 0; i < numBlocks; i++) {
   quants.push(1);
+  actualQuants.push(0);
 }
 
 function getRowStr(i, stock = true) {
   if (stock) {
-    return `<tr\>\n<td id="block${i}-img" style="border: 1px solid black; width: min(50px, 10vw); padding: 4px 8px;"\>\n<img src=${imgFiles[i]} width=40px height=40px></td\>\n<td style="border: 1px solid black; padding: 4px 8px; text-align: center;"\>\n${i}\n</td\>\n<td style="border: 1px solid black; width: min(140px, 10vw); padding: 4px 8px;"\>\n <span id="block${i}-cnt" style="width: min(30px, 4vw); display: inline-block;"\>${quants[i]}</span\> <button id="btn_${i}_m" type="button" style="width: min(30px, 4vw); height: min(30px, 4vw); margin-left: min(20px, 1vw); padding: 0; display: inline;" onclick="(function(){quants[${i}]-=(quants[${i}]>0); updateCounts();})()"\>-</button\> <button id="btn_${i}_p" type="button" style="width: min(30px, 4vw); height: min(30px, 4vw); text-align: center; padding: 0;" onclick="(function(){quants[${i}]+=1; updateCounts();})()"\>+</button\>\n</td\>\n</tr\>`;
+    return `<tr\>\n<td id="block${i}-img" style="border: 1px solid black; width: min(50px, 10vw); padding: 4px 8px;"\>\n<img src=${imgFiles[i]} width=40px height=40px></td\>\n<td style="border: 1px solid black; padding: 4px 8px; text-align: center;"\>\n${i}\n</td\>\n<td style="border: 1px solid black; width: min(180px, 12vw); padding: 4px 8px;"\>\n <span id="block${i}-cnt" style="width: min(12px, 0.5vw); display: inline-block;"\>${quants[i]}</span\> <button id="btn_${i}_m" type="button" style="width: min(25px, 3vw); height: min(25px, 3vw); margin-left: min(10px, 1vw); padding: 0; display: inline;" onclick="(function(){quants[${i}]-=(quants[${i}]>0); updateCounts();})()"\>-</button\> <button id="btn_${i}_p" type="button" style="width: min(25px, 3vw); height: min(25px, 3vw); text-align: center; padding: 0; display: inline;" onclick="(function(){quants[${i}]+=1; updateCounts();})()"\>+</button\>\n</td\>\n<td id="block${i}-acnt"style="border: 1px solid black; width: min(50px, 10vw); text-align: center;"\>${actualQuants[i]}</td\></tr\>`;
   }
 }
 
-function updateCounts() {
+function updateCounts(inGen = false) {
   for (let i = 0; i < quants.length; i++) {
     let id = `block${i}-cnt`;
     document.getElementById(id).innerText = quants[i];
+    document.getElementById(`block${i}-acnt`).innerText = actualQuants[i];
   }
+
   numShown = quants.reduce((a, b) => {
     return a + b;
   });
-  reflectCounts();
+
+  if (!inGen) {
+    reflectCounts();
+  }
 }
 
 function reflectCounts() {
@@ -88,6 +95,7 @@ function reflectCounts() {
       block_imgs.push(block_imgs_set[i]);
     }
   }
+
   blockGen();
 }
 
@@ -109,6 +117,7 @@ function preload() {
   for (let i = 0; i < numBlocks; i++) {
     imgFiles.push("squares/" + i + ".png");
     block_imgs_set.push(loadImage("squares/" + i + ".png"));
+    block_imgs_set[i].y = i;
   }
   reflectCounts();
 }
@@ -169,19 +178,24 @@ function interpret(summary) {
 }
 
 function getBlock(index) {
-  if (index % numBlocks == 0) {
+  if (index % numShown == 0) {
     blockOrder = shuffle(blockOrder);
   }
-  return blockOrder[index % numBlocks];
+  let ind = blockOrder[index % numShown];
+  return ind;
 }
 
 function blockGen() {
+  for (let i = 0; i < actualQuants.length; i++) {
+    actualQuants[i] = 0;
+  }
   if (blockOrder.length != numShown) {
     blockOrder = [];
     for (let i = 0; i < numShown; i++) {
       blockOrder.push(i);
     }
   }
+
   let style = mode;
   if (style != "Randomized" && save_rotation) {
     for (let r of assignments) {
@@ -214,6 +228,7 @@ function blockGen() {
     for (let j = 0; j < nSide; j++) {
       let n = i * nSide + j;
       let blockChoice = getBlock(n);
+      actualQuants[block_imgs[blockChoice].y]++;
       let rotation = 0;
 
       if (style == "Randomized") {
@@ -249,6 +264,12 @@ function blockGen() {
       row.push(createVector(blockChoice, rotation));
     }
     assignments.push(row);
+  }
+
+  try {
+    updateCounts(true);
+  } catch {
+    null;
   }
 }
 
@@ -413,7 +434,7 @@ function draw() {
         translate(block.x + sideLength * 0.2, block.y + sideLength * 0.2);
         textAlign(CENTER);
         textSize(12);
-        text(assigned.x, sideLength * 0.0, -sideLength * 0.32);
+        text(block_imgs[assigned.x].y, sideLength * 0.0, -sideLength * 0.32);
         rotate((assigned.y * PI) / 2);
         try {
           image(
@@ -455,14 +476,19 @@ function draw() {
     numBlocks = user_imgs.length;
     numShown = numBlocks;
     block_imgs_set = user_imgs;
+    for (let i = 0; i < block_imgs_set.length; i++) {
+      block_imgs_set[i].y = i;
+    }
     imgFiles = [];
     console.log("updating...");
     for (let i in user_files) {
       imgFiles.push(URL.createObjectURL(user_files[i]));
     }
     quants = [];
+    actualQuants = [];
     for (let i = 0; i < numBlocks; i++) {
       quants.push(1);
+      actualQuants.push(0);
       updateTable(i);
     }
     blockGen();
