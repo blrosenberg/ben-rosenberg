@@ -27,6 +27,8 @@ let label_height = Math.min(h / (numBlocks * 1.5), w / (numBlocks * 1.5));
 
 let user_files = [];
 let user_imgs = [];
+let backup = [];
+let backup2;
 
 let mode = "Randomized";
 
@@ -88,6 +90,72 @@ function updateCounts(inGen = false) {
   }
 }
 
+function resizeImages() {
+  let image;
+  let canvas;
+  for (let i = 0; i < user_imgs.length; i++) {
+    image = user_imgs[i].canvas;
+
+    (canvas = document.createElement("canvas")),
+      (max_size = 500),
+      (width = image.width),
+      (height = image.height);
+    if (width > height) {
+      if (width > max_size) {
+        height *= max_size / width;
+        width = max_size;
+      }
+    } else {
+      if (height > max_size) {
+        width *= max_size / height;
+        height = max_size;
+      }
+    }
+    console.log(image.width, image.height);
+    console.log(width, height);
+
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+    var dataUrl = canvas.toDataURL("image/jpeg");
+    var resizedImage = loadImage(dataUrl);
+    backup2 = dataUrl;
+    z;
+    user_imgs[i] = resizedImage;
+    if (user_imgs[i].canvas.width == 1 || user_imgs[i].canvas.height == 1) {
+      fetch(dataUrl).then((data) => {
+        loadImage(data, (imgResult) => {
+          user_imgs[i] = imgResult;
+        });
+      });
+    }
+  }
+}
+
+var dataURLToBlob = function (dataURL) {
+  var BASE64_MARKER = ";base64,";
+  if (dataURL.indexOf(BASE64_MARKER) == -1) {
+    var parts = dataURL.split(",");
+    var contentType = parts[0].split(":")[1];
+    var raw = parts[1];
+
+    return new Blob([raw], { type: contentType });
+  }
+
+  var parts = dataURL.split(BASE64_MARKER);
+  var contentType = parts[0].split(":")[1];
+  var raw = window.atob(parts[1]);
+  var rawLength = raw.length;
+
+  var uInt8Array = new Uint8Array(rawLength);
+
+  for (var i = 0; i < rawLength; ++i) {
+    uInt8Array[i] = raw.charCodeAt(i);
+  }
+
+  return new Blob([uInt8Array], { type: contentType });
+};
+
 function reflectCounts() {
   block_imgs = [];
   for (let i = 0; i < quants.length; i++) {
@@ -117,7 +185,7 @@ function preload() {
   for (let i = 0; i < numBlocks; i++) {
     imgFiles.push("squares/" + i + ".png");
     block_imgs_set.push(loadImage("squares/" + i + ".png"));
-    block_imgs_set[i].y = i;
+    block_imgs_set[i].ind = i;
   }
   reflectCounts();
 }
@@ -228,7 +296,7 @@ function blockGen() {
     for (let j = 0; j < nSide; j++) {
       let n = i * nSide + j;
       let blockChoice = getBlock(n);
-      actualQuants[block_imgs[blockChoice].y]++;
+      actualQuants[block_imgs[blockChoice].ind]++;
       let rotation = 0;
 
       if (style == "Randomized") {
@@ -434,7 +502,7 @@ function draw() {
         translate(block.x + sideLength * 0.2, block.y + sideLength * 0.2);
         textAlign(CENTER);
         textSize(12);
-        text(block_imgs[assigned.x].y, sideLength * 0.0, -sideLength * 0.32);
+        text(block_imgs[assigned.x].ind, sideLength * 0.0, -sideLength * 0.32);
         rotate((assigned.y * PI) / 2);
         try {
           image(
@@ -472,12 +540,19 @@ function draw() {
   if (user_files.length != prev_uf_length && user_files.length != numBlocks) {
     user_files = user_files.slice(prev_uf_length, user_files.length);
     user_imgs = user_imgs.slice(prev_uf_length, user_imgs.length);
+    backup = user_imgs;
     document.getElementById("relCountTable").innerHTML = init_table;
     numBlocks = user_imgs.length;
     numShown = numBlocks;
+    //resizeImages();
     block_imgs_set = user_imgs;
+    //resizeImages();
     for (let i = 0; i < block_imgs_set.length; i++) {
-      block_imgs_set[i].y = i;
+      block_imgs_set[i].ind = i;
+      let wd = 100;
+      let ht = 100;
+      //block_imgs_set[i].width = wd;
+      //block_imgs_set[i].height = ht;
     }
     imgFiles = [];
     console.log("updating...");
@@ -495,7 +570,7 @@ function draw() {
     blockGen();
     console.log(numBlocks);
     console.log(assignments);
-    block_imgs = user_imgs;
+    block_imgs = block_imgs_set;
     prev_uf_length = user_files.length;
   }
 }
