@@ -29,6 +29,7 @@ let user_files = [];
 let user_imgs = [];
 let backup = [];
 let backup2;
+let autoUpdate = false;
 
 let mode = "Randomized";
 
@@ -454,6 +455,10 @@ function draw() {
     "background-color",
     ["#eeeeee", "#aaaaff"][+save_rotation]
   );
+
+  if (autoUpdate && frameCount % 60 == 0) {
+    blockGen();
+  }
 
   if (nSide != nSide_hist || nSideY != nSideY_hist) {
     blockGen();
