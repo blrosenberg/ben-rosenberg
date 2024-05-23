@@ -15,7 +15,7 @@ function setup() {
     pts.push(createVector(random(), random(), random([0, 1])));
   }
   kslider = createSlider(1, npts, 5, 1);
-  kslider.position(width / 3, height - 20);
+  kslider.position(width / 3, height + 10);
 }
 
 function pts_dist(x, y) {
@@ -25,6 +25,15 @@ function pts_dist(x, y) {
     dists.push(createVector(distance, i));
   }
   return dists.sort((a, b) => a.x - b.x);
+}
+
+function k_closest(x, y, k) {
+  let dists = pts_dist(x, y);
+  let out = [];
+  for (let i = 0; i < k; i++) {
+    out.push(dists[i].y);
+  }
+  return out;
 }
 
 function neighborVote(x, y, k, rnd = true) {
@@ -101,8 +110,10 @@ function draw() {
     stroke(0);
     strokeWeight(1);
     let neighbors = [];
+    let inds = [];
     for (let mp of mousepts) {
       let pt = pts[mp.y];
+      inds.push(mp.y);
       point(pt.x * width, pt.y * height);
       let angle = createVector(midX * width, midY * height)
         .sub([pt.x * width, pt.y * height])
@@ -111,13 +122,28 @@ function draw() {
       neighbors.push(createVector(pt.x * width, pt.y * height, angle + TWO_PI));
     }
 
-    neighbors = neighbors.sort((a, b) => a.z - b.z);
-    console.log(neighbors.map((o) => o.z - TWO_PI));
+    //neighbors = neighbors.sort((a,b)=>((a.z)-(b.z)))
+    //console.log(neighbors.map(o=>o.z-TWO_PI))
     //noLoop()
 
-    beginShape();
-    for (let n of neighbors) {
-      vertex(n.x, n.y);
+    //beginShape();
+
+    let kc = k_closest(mouseX, mouseY, k);
+    let nb = [];
+    console.log(kc);
+    for (let i in kc) {
+      nb.push(pts[i].z);
+    }
+
+    for (let i = 0; i < neighbors.length; i++) {
+      let n = pts[inds[i]];
+      let nx = n.x * width;
+      let ny = n.y * height;
+      //vertex(n.x, n.y)
+      //console.log(n)
+      //noLoop()
+      stroke(n.z * 255, 0, (1 - n.z) * 255);
+      line(mouseX, mouseY, nx, ny);
     }
     let vote = neighborVote(mouseX / width, mouseY / height, k, (rnd = false));
 
@@ -126,10 +152,10 @@ function draw() {
 
     text(k0.toString() + ":" + k1.toString(), mouseX + 10, mouseY);
 
-    fill(colorChoose(vote > 0.5, 25));
-    vertex(neighbors[0].x, neighbors[0].y);
-    endShape(CLOSE);
-    strokeWeight(5);
+    stroke(colorChoose(vote > 0.5, 255));
+    //vertex(neighbors[0].x, neighbors[0].y)
+    //endShape(CLOSE);
+    strokeWeight(10);
     point(mouseX, mouseY);
 
     pop();
